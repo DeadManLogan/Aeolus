@@ -1,4 +1,8 @@
 from flask import Blueprint, jsonify, request
+import requests
+from config import Settings
+
+settings = Settings()
 
 weather_blueprint = Blueprint("weather", __name__)
 
@@ -6,10 +10,20 @@ weather_blueprint = Blueprint("weather", __name__)
 def get_weather() -> dict:
     city = request.args.get("city", "Unknown")
 
-    response = {
-        "city": city,
-        "temperature": 25,
-        "conditions": "sunny"
-    }
+    try:
+        url = (
+            f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/"
+            f"timeline/{city}?unitGroup=metric&key={settings.API_KEY}&contentType=json"
+        )
+        response = requests.get(url)
 
-    return jsonify(response), 200
+        data = response.json()
+        weather = {
+            "city": city,
+            "temperature": data["currentConditions"]["temp"],
+            "conditions": data["currentConditions"]["conditions"],
+            "source": "Visual Crossing"
+        }
+        return jsonify(weather), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

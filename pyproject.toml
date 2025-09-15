@@ -5,7 +5,7 @@ description = "Weather API in Python"
 authors = [
     {name = "DeadManLogan", email = "grigoroudisdimosthenis@gmail.com"},
 ]
-dependencies = ["flask>=3.1.2", "python-dotenv>=1.1.1", "redis>=6.4.0"]
+dependencies = ["flask>=3.1.2", "python-dotenv>=1.1.1", "redis>=6.4.0", "requests>=2.32.5"]
 requires-python = "==3.11.*"
 readme = "README.md"
 license = {text = "MIT"}
